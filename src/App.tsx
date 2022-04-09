@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import Env from './Model/Env'
 
 interface EnvObject {
   key: string
-  value: string | number | boolean | undefined
+  value: string | number | boolean
   type: string
 }
 
 function App(): React.ReactElement {
   const [displayEnv, setDisplayEnv] = useState<EnvObject[]>([])
+  const memoEnv = useMemo(() => new Env(), [])
 
   useEffect(() => {
-    console.log(process.env)
     setDisplayEnv(
-      Object.entries(process.env).map((env) => ({
+      Object.entries(memoEnv).map((env) => ({
         key: env[0],
         value: env[1],
         type: typeof env[1]
       }))
     )
-  }, [])
+  }, [memoEnv])
 
   return (
     <div>
