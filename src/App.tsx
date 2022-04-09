@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import Env from './Model/Env'
+import React, { useState, useEffect } from 'react'
+import useEnv from './Hook/useEnv'
 
 interface EnvObject {
   key: string
@@ -9,17 +9,17 @@ interface EnvObject {
 
 function App(): React.ReactElement {
   const [displayEnv, setDisplayEnv] = useState<EnvObject[]>([])
-  const memoEnv = useMemo(() => new Env(), [])
+  const env = useEnv()
 
   useEffect(() => {
     setDisplayEnv(
-      Object.entries(memoEnv).map((env) => ({
-        key: env[0],
-        value: env[1],
-        type: typeof env[1]
+      Object.entries(env).map((e) => ({
+        key: e[0],
+        value: e[1],
+        type: typeof e[1]
       }))
     )
-  }, [memoEnv])
+  }, [env])
 
   return (
     <div>
